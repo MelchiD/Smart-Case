@@ -239,19 +239,27 @@ void moveServoTo128() {
 
 // Handle ultrasonic sensor logic
 void handleUltrasonicSensor(int distance) {
-  if (distance < 50) {
-    lcd.setCursor(0, 0);
-    lcd.print("Object detected!");
-    lcd.setCursor(0, 1);
-    lcd.print("Dist: ");
-    lcd.print(distance);
-    lcd.print(" cm");
-
-    digitalWrite(BUZZER_PIN, HIGH);
+   if (distance <= 100 && distance > 40) {
+    lcd.clear();
+    lcd.print("WELCOME");
     delay(1000);
-    digitalWrite(BUZZER_PIN, LOW);
+  } else if (distance <= 40 && distance > 20) {
+    lcd.clear();
+    lcd.print("WARNING");
+    lcd.setCursor(0, 1);
+    lcd.print("TOO CLOSE");
+  } else if (distance <= 20) {
+    lcd.clear();
+    lcd.print("WARNING");
+    lcd.setCursor(0, 1);
+    lcd.print("TOO CLOSE");
+    tone(BUZZER_PIN, 1000);
+    delay(1000);
+    noTone(BUZZER_PIN);
   } else {
     lcd.clear();
+    lcd.print("GOODBYE");
+    delay(1000);
   }
 }
 
